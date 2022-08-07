@@ -185,15 +185,15 @@ local text_name = lib:Draw("Text", nil, {
 })
 
 drawingTween(background_frame,lib:RoundVector(lib:ScreenSize()/2) - Vector2.new(840,280),"Sine","InOut",delay)
- notification_toggled = true
+
 
 game:GetService("RunService").RenderStepped:Connect(function()
-            if  notification_toggled == true then
+
     background_frame_outline.Position = background_frame.Position
             task.wait()
     text_name.Position = background_frame.Position + Vector2.new(75,5)
                 end
-             notification_toggled = false
+
  end)
 
 
@@ -202,5 +202,5 @@ background_frame_outline:Remove()
 background_frame:Remove()
 text_name:Remove()
 
- notification_toggled = true
+
 end
