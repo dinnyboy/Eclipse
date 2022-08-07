@@ -164,7 +164,7 @@ local notifications = {
     accent = Color3.fromRGB(255,255,255)
 }
 function notify(text,delay)
-
+local notification_toggled = false
 local background_frame = lib:Draw("Square", nil,{
     Color = Color3.fromRGB(22, 13, 13),
     Size = Vector2.new(150,25),
@@ -183,13 +183,17 @@ local text_name = lib:Draw("Text", nil, {
     Size = 15,
     Center = true
 })
-    
+
 drawingTween(background_frame,lib:RoundVector(lib:ScreenSize()/2) - Vector2.new(840,280),"Sine","InOut",delay)
+ notification_toggled = true
 
 game:GetService("RunService").RenderStepped:Connect(function()
+            if  notification_toggled == true then
     background_frame_outline.Position = background_frame.Position
             task.wait()
     text_name.Position = background_frame.Position + Vector2.new(75,5)
+                end
+             notification_toggled = false
  end)
 
 
@@ -198,5 +202,5 @@ background_frame_outline:Remove()
 background_frame:Remove()
 text_name:Remove()
 
-
+ notification_toggled = true
 end
