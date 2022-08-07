@@ -184,11 +184,12 @@ local text_name = lib:Draw("Text", nil, {
     Center = true
 })
     
-drawingTween(background_frame,lib:RoundVector(lib:ScreenSize()/2) - Vector2.new(840,280),"Sine","InOut",1)
+drawingTween(background_frame,lib:RoundVector(lib:ScreenSize()/2) - Vector2.new(840,280),"Sine","InOut",delay)
 
 game:GetService("RunService").RenderStepped:Connect(function()
     background_frame_outline.Position = background_frame.Position
-   text_name.Position = background_frame.Position + Vector2.new(75,5)
+            task.wait()
+    text_name.Position = background_frame.Position + Vector2.new(75,5)
  end)
 
 
