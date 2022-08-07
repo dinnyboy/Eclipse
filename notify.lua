@@ -180,7 +180,7 @@ local text_name = lib:Draw("Text", nil, {
     Color = Color3.fromRGB(255,255,255),
     Font = 2,
     Text = text,
-    Size = 15, Position  = background_frame.Position + Vector2.new(35,5),
+    Size = 15,
     Center = true
 })
     
