@@ -2890,8 +2890,8 @@ do
             Text = dropdown.current,
             Size = theme.textsize,
             Font = theme.font,
-            Color = theme.textcolor,
-            OutlineColor = theme.textborder,
+            Color =  Color3.fromRGB(255,255,255),
+            OutlineColor =  Color3.fromRGB(255,255,255),
             Position = utility:Position(0, 3, 0, (dropdown_frame.Size.Y/2) - 7, dropdown_frame),
             Visible = page.open
         }, section.visibleContent)
@@ -2908,7 +2908,7 @@ do
         function dropdown:Update()
             if dropdown.open and dropdown.holder.inline then
                 for i,v in pairs(dropdown.holder.buttons) do
-                    v[1].Color = v[1].Text == tostring(dropdown.current) and theme.accent or theme.textcolor
+                    v[1].Color = v[1].Text == tostring(dropdown.current) and theme.accent or Color3.fromRGB(255,255,255)
                     local dropdown_connect dropdown_connect = rs.RenderStepped:Connect(function()
                         if dropdown.open and v[1].Text == tostring(dropdown.current) then
                             v[1].Color = theme.accent
@@ -2980,8 +2980,8 @@ do
                                 Text = v,
                                 Size = theme.textsize,
                                 Font = theme.font,
-                                Color = v == tostring(dropdown.current) and theme.accent or theme.textcolor,
-                                OutlineColor = theme.textborder,
+                                Color = v == tostring(dropdown.current) and  Color3.fromRGB(255,255,255),
+                                OutlineColor =  Color3.fromRGB(255,255,255),
                                 Position = utility:Position(0, v == tostring(dropdown.current) and 8 or 6, 0, 2, dropdown_value_frame),
                                 Visible = page.open
                             }, dropdown.holder.drawings);dropdown.holder.buttons[#dropdown.holder.buttons + 1] = {dropdown_value, dropdown_value_frame}
