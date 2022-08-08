@@ -1725,7 +1725,7 @@ do
                 if toggle.current then
                     local toggle_con toggle_con = rs.RenderStepped:Connect(function()
                         if toggle.current then
-                            local h, s, v = theme.accent:ToHSV()
+                            local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
                             toggle_inline.Color = Color3.fromHSV(h, 0.44, v)
                         else
                             toggle_inline.Color = theme.inline
@@ -1743,7 +1743,7 @@ do
         library.changed[#library.changed + 1] = function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseMovement and toggle_outline.Visible and window.isVisible then
                 if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + toggle.axis, section.section_frame.Position.X + section.section_frame.Size.X - toggle.addedAxis, section.section_frame.Position.Y + toggle.axis + 15}) and not window:IsOverContent() then
-                    local h, s, v = theme.accent:ToHSV()
+                    local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
                     toggle_inline.Color = Color3.fromHSV(h, 0.44, v)
                 else
                     toggle_inline.Color = theme.inline
@@ -4374,7 +4374,7 @@ do
             --
             for i, v in next, configLoader.buttons do
                 if v.Text == configLoader.current then
-                    v.Color = theme.accent
+                    v.Color = Color3.fromRGB(255,255,255)
                     return
                 end
             end
