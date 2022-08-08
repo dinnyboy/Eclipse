@@ -1382,7 +1382,8 @@ do
         --
         return setmetatable(page, pages)
     end
-    --
+    -- 
+    
     function pages:Section(info)
         local info = info or {}
         local name = info.name or info.Name or info.title or info.Title or "New Section"
@@ -1416,7 +1417,7 @@ do
         local section_accent = utility:Create("Frame", {Vector2.new(0,0), section_frame}, {
             Size = utility:Size(1, 0, 0, 2, section_frame),
             Position = utility:Position(0, 0, 0, 0, section_frame),
-            Color = Color3.fromRGB(255,255,255),
+            Color =  Color3.fromRGB(255,255,255),
             Visible = page.open
         }, section.visibleContent);section["section_accent"] = section_accent
         library.accents[#library.accents + 1] = section_accent
