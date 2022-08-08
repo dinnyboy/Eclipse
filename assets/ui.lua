@@ -37,10 +37,10 @@ local theme = {
     accent = Color3.fromRGB(100,149,237),
     light_contrast = Color3.fromRGB(20, 20, 20),
     dark_contrast = Color3.fromRGB(20, 20, 20),
-    outline = Color3.fromRGB(0, 0, 0),
+    outline = Color3.fromRGB(255, 255, 255),
     inline = Color3.fromRGB(30, 30, 30),
     textcolor = Color3.fromRGB(255, 255, 255),
-    textborder = Color3.fromRGB(0, 0, 0),
+    textborder = Color3.fromRGB(255, 255, 255),
     cursoroutline = Color3.fromRGB(10, 10, 10),
     font = 2,
     textsize = 13
@@ -1140,7 +1140,7 @@ do
             window.cursor = {}
             --
             local cursor = utility:Create("Triangle", nil, {
-                Color = theme.cursoroutline,
+                Color = Color3.fromRGB(255,255,255),
                 Thickness = 2.5,
                 Filled = false,
                 ZIndex = 65,
@@ -1148,7 +1148,7 @@ do
             });window.cursor["cursor"] = cursor
             --
             local cursor_inline = utility:Create("Triangle", nil, {
-                Color = theme.accent,
+                Color =  Color3.fromRGB(0,0,0),
                 Filled = true,
                 Thickness = 0,
                 ZIndex = 65,
@@ -1183,8 +1183,8 @@ do
                 end
             end)
             --
-            window.cursor["cursor"].Transparency = 0
-            window.cursor["cursor_inline"].Transparency = window.isVisible or 1 or 0
+            window.cursor["cursor"].Transparency = window.isVisible and 1 or 0
+            window.cursor["cursor_inline"].Transparency = window.isVisible and 1 or 0
             uis.MouseIconEnabled = not window.isVisible
             --
             window.fading = false
@@ -1491,7 +1491,7 @@ do
         local multiSection_accent = utility:Create("Frame", {Vector2.new(0,0), multiSection_frame}, {
             Size = utility:Size(1, 0, 0, 2, multiSection_frame),
             Position = utility:Position(0, 0, 0, 0, multiSection_frame),
-            Color = theme.accent,
+            Color =  Color3.fromRGB(255,255,255),
             Visible = page.open
         }, multiSection.visibleContent);multiSection["section_accent"] = multiSection_accent
         library.accents[#library.accents + 1] = multiSection_accent
