@@ -1416,7 +1416,7 @@ do
         local section_accent = utility:Create("Frame", {Vector2.new(0,0), section_frame}, {
             Size = utility:Size(1, 0, 0, 2, section_frame),
             Position = utility:Position(0, 0, 0, 0, section_frame),
-            Color = Color.FromRGB(255,255,255),
+            Color = Color.fromRGB(255,255,255),
             Visible = page.open
         }, section.visibleContent);section["section_accent"] = section_accent
         library.accents[#library.accents + 1] = section_accent
