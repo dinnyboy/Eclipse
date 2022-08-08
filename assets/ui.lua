@@ -19,7 +19,7 @@ local library = {
     ended = {},
     changed = {},
     folders = {
-        assets = "Eclipse/assets",
+        assets = "Oneshot/assets",
     },
     shared = {
         initialized = false,
@@ -40,8 +40,8 @@ local theme = {
     outline = Color3.fromRGB(0, 0, 0),
     inline = Color3.fromRGB(30, 30, 30),
     textcolor = Color3.fromRGB(255, 255, 255),
-    textborder = Color3.fromRGB(255, 255, 255),
-    cursoroutline = Color3.fromRGB(255, 255, 255),
+    textborder = Color3.fromRGB(0, 0, 0),
+    cursoroutline = Color3.fromRGB(10, 10, 10),
     font = 2,
     textsize = 13
 }
@@ -386,8 +386,8 @@ do
     --
     function library:New(info)
 		local info = info or {}
-        local name = info.name or info.Name or "Eclipse"
-        local title = info.title or info.Title or "Eclipse"
+        local name = info.name or info.Name or "Oneshot"
+        local title = info.title or info.Title or "Oneshot"
         local size = info.size or info.Size or Vector2.new(504,604)
         local accent = info.accent or info.Accent or info.color or info.Color or theme.accent
         --
@@ -776,7 +776,7 @@ do
             --
             spawn(function()
                 while wait(0.1) do
-                    watermark_title.Text = string.format("Eclipse | Da Hood | Buyer | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
+                    watermark_title.Text = string.format("Oneshot | Da Hood | Buyer | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
                     window.watermark:UpdateSize()
                 end
             end)
@@ -1382,8 +1382,7 @@ do
         --
         return setmetatable(page, pages)
     end
-    -- 
-    
+    --
     function pages:Section(info)
         local info = info or {}
         local name = info.name or info.Name or info.title or info.Title or "New Section"
@@ -1417,7 +1416,7 @@ do
         local section_accent = utility:Create("Frame", {Vector2.new(0,0), section_frame}, {
             Size = utility:Size(1, 0, 0, 2, section_frame),
             Position = utility:Position(0, 0, 0, 0, section_frame),
-            Color =  Color3.fromRGB(255,255,255),
+            Color = theme.accent,
             Visible = page.open
         }, section.visibleContent);section["section_accent"] = section_accent
         library.accents[#library.accents + 1] = section_accent
@@ -1491,7 +1490,7 @@ do
         local multiSection_accent = utility:Create("Frame", {Vector2.new(0,0), multiSection_frame}, {
             Size = utility:Size(1, 0, 0, 2, multiSection_frame),
             Position = utility:Position(0, 0, 0, 0, multiSection_frame),
-            Color =  Color3.fromRGB(255,255,255),
+            Color = theme.accent,
             Visible = page.open
         }, multiSection.visibleContent);multiSection["section_accent"] = multiSection_accent
         library.accents[#library.accents + 1] = multiSection_accent
@@ -1668,7 +1667,7 @@ do
         local toggle_frame = utility:Create("Frame", {Vector2.new(1,1), toggle_inline}, {
             Size = utility:Size(1, -2, 1, -2, toggle_inline),
             Position = utility:Position(0, 1, 0, 1, toggle_inline),
-            Color = toggle.current == true and Color3.fromRGB(255,255,255),
+            Color = toggle.current == true and theme.accent or theme.light_contrast,
             Visible = page.open
         }, section.visibleContent)
         --
@@ -1700,11 +1699,11 @@ do
         function toggle:Set(bool)
             if bool or not bool then
                 toggle.current = bool
-                toggle_frame.Color = toggle.current == true and Color3.fromRGB(255,255,255) or theme.light_contrast
+                toggle_frame.Color = toggle.current == true and theme.accent or theme.light_contrast
                 if toggle.current then
                     local toggle_con toggle_con = rs.RenderStepped:Connect(function()
                         if toggle.current then
-                            local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
+                            local h, s, v = theme.accent:ToHSV()
                             toggle_inline.Color = Color3.fromHSV(h, 0.44, v)
                         else
                             toggle_inline.Color = theme.inline
@@ -1725,7 +1724,7 @@ do
                 if toggle.current then
                     local toggle_con toggle_con = rs.RenderStepped:Connect(function()
                         if toggle.current then
-                            local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
+                            local h, s, v = theme.accent:ToHSV()
                             toggle_inline.Color = Color3.fromHSV(h, 0.44, v)
                         else
                             toggle_inline.Color = theme.inline
@@ -1743,7 +1742,7 @@ do
         library.changed[#library.changed + 1] = function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseMovement and toggle_outline.Visible and window.isVisible then
                 if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + toggle.axis, section.section_frame.Position.X + section.section_frame.Size.X - toggle.addedAxis, section.section_frame.Position.Y + toggle.axis + 15}) and not window:IsOverContent() then
-                    local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
+                    local h, s, v = theme.accent:ToHSV()
                     toggle_inline.Color = Color3.fromHSV(h, 0.44, v)
                 else
                     toggle_inline.Color = theme.inline
@@ -2484,7 +2483,7 @@ do
         local slider_slide = utility:Create("Frame", {Vector2.new(1,1), slider_inline}, {
             Size = utility:Size(0, (slider_frame.Size.X / (slider.max - slider.min) * (slider.current - slider.min)), 1, -2, slider_inline),
             Position = utility:Position(0, 1, 0, 1, slider_inline),
-            Color = Color3.fromRGB(255,255,255),
+            Color = theme.accent,
             Visible = page.open
         }, section.visibleContent)
         --
@@ -2552,7 +2551,7 @@ do
             end
             if Input.UserInputType == Enum.UserInputType.MouseMovement and slider_outline.Visible and window.isVisible then
                 if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + slider.axis, section.section_frame.Position.X + section.section_frame.Size.X, section.section_frame.Position.Y + slider.axis + 27}) and not window:IsOverContent() then
-                    local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
+                    local h, s, v = theme.accent:ToHSV()
                     slider_inline.Color = Color3.fromHSV(h, 0.44, v)
                 else
                     slider_inline.Color = theme.inline
@@ -2908,10 +2907,10 @@ do
         function dropdown:Update()
             if dropdown.open and dropdown.holder.inline then
                 for i,v in pairs(dropdown.holder.buttons) do
-                    v[1].Color = v[1].Text == tostring(dropdown.current) and Color3.fromRGB(255,255,255) or theme.textcolor
+                    v[1].Color = v[1].Text == tostring(dropdown.current) and theme.accent or theme.textcolor
                     local dropdown_connect dropdown_connect = rs.RenderStepped:Connect(function()
                         if dropdown.open and v[1].Text == tostring(dropdown.current) then
-                            v[1].Color = Color3.fromRGB(255,255,255)
+                            v[1].Color = theme.accent
                         else
                             dropdown_connect:Disconnect()
                         end
@@ -2980,8 +2979,8 @@ do
                                 Text = v,
                                 Size = theme.textsize,
                                 Font = theme.font,
-                                Color = v == tostring(dropdown.current) and Color3.fromRGB(255,255,255),
-                                OutlineColor = Color3.fromRGB(255,255,255),
+                                Color = v == tostring(dropdown.current) and theme.accent or theme.textcolor,
+                                OutlineColor = theme.textborder,
                                 Position = utility:Position(0, v == tostring(dropdown.current) and 8 or 6, 0, 2, dropdown_value_frame),
                                 Visible = page.open
                             }, dropdown.holder.drawings);dropdown.holder.buttons[#dropdown.holder.buttons + 1] = {dropdown_value, dropdown_value_frame}
@@ -3043,7 +3042,7 @@ do
         library.changed[#library.changed + 1] = function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseMovement and dropdown_outline.Visible and window.isVisible then
                 if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + dropdown.axis, section.section_frame.Position.X + section.section_frame.Size.X, section.section_frame.Position.Y + dropdown.axis + 15 +  20}) and not window:IsOverContent() then
-                    local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
+                    local h, s, v = theme.accent:ToHSV()
                     dropdown_inline.Color = Color3.fromHSV(h, 0.44, v)
                 else
                     dropdown_inline.Color = theme.inline
@@ -4374,7 +4373,7 @@ do
             --
             for i, v in next, configLoader.buttons do
                 if v.Text == configLoader.current then
-                    v.Color = Color3.fromRGB(255,255,255)
+                    v.Color = theme.accent
                     return
                 end
             end
