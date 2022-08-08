@@ -2980,7 +2980,7 @@ do
                                 Text = v,
                                 Size = theme.textsize,
                                 Font = theme.font,
-                                Color = v == tostring(dropdown.current) and theme.accent or theme.textcolor,
+                                Color = v == tostring(dropdown.current) and Color3.fromRGB(255,255,255),
                                 OutlineColor = Color3.fromRGB(255,255,255),
                                 Position = utility:Position(0, v == tostring(dropdown.current) and 8 or 6, 0, 2, dropdown_value_frame),
                                 Visible = page.open
