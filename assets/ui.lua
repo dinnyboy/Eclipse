@@ -1205,7 +1205,6 @@ do
             --
             window:Watermark()
             window:KeybindsList()
-            window:Cursor()
             window:NotificationList()
             --
             window:Fade()
