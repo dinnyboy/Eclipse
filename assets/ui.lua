@@ -19,7 +19,7 @@ local library = {
     ended = {},
     changed = {},
     folders = {
-        assets = "Oneshot/assets",
+        assets = "Eclipse/assets",
     },
     shared = {
         initialized = false,
@@ -386,8 +386,8 @@ do
     --
     function library:New(info)
 		local info = info or {}
-        local name = info.name or info.Name or "Oneshot"
-        local title = info.title or info.Title or "Oneshot"
+        local name = info.name or info.Name or "Eclipse"
+        local title = info.title or info.Title or "Eclipse"
         local size = info.size or info.Size or Vector2.new(504,604)
         local accent = info.accent or info.Accent or info.color or info.Color or theme.accent
         --
@@ -776,7 +776,7 @@ do
             --
             spawn(function()
                 while wait(0.1) do
-                    watermark_title.Text = string.format("Oneshot | Da Hood | Buyer | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
+                    watermark_title.Text = string.format("Eclipse | Da Hood | Buyer | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
                     window.watermark:UpdateSize()
                 end
             end)
