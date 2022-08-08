@@ -1184,7 +1184,7 @@ do
             end)
             --
             window.cursor["cursor"].Transparency = 0
-            window.cursor["cursor_inline"].Transparency = 0
+            window.cursor["cursor_inline"].Transparency = window.isVisible or 1 or 0
             uis.MouseIconEnabled = not window.isVisible
             --
             window.fading = false
@@ -1416,7 +1416,7 @@ do
         local section_accent = utility:Create("Frame", {Vector2.new(0,0), section_frame}, {
             Size = utility:Size(1, 0, 0, 2, section_frame),
             Position = utility:Position(0, 0, 0, 0, section_frame),
-            Color = theme.accent,
+            Color = Color.FromRGB(255,255,255),
             Visible = page.open
         }, section.visibleContent);section["section_accent"] = section_accent
         library.accents[#library.accents + 1] = section_accent
