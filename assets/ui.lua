@@ -34,7 +34,7 @@ local sections = {}
 -- Theme Variables
 --local themes = {}
 local theme = {
-    accent = Color3.fromRGB(255,25,255),
+    accent = Color3.fromRGB(100,149,237),
     light_contrast = Color3.fromRGB(20, 20, 20),
     dark_contrast = Color3.fromRGB(20, 20, 20),
     outline = Color3.fromRGB(0, 0, 0),
@@ -1668,7 +1668,7 @@ do
         local toggle_frame = utility:Create("Frame", {Vector2.new(1,1), toggle_inline}, {
             Size = utility:Size(1, -2, 1, -2, toggle_inline),
             Position = utility:Position(0, 1, 0, 1, toggle_inline),
-            Color = toggle.current == true and theme.accent or theme.light_contrast,
+            Color = toggle.current == true and Color3.fromRGB(255,255,255),
             Visible = page.open
         }, section.visibleContent)
         --
@@ -1700,11 +1700,11 @@ do
         function toggle:Set(bool)
             if bool or not bool then
                 toggle.current = bool
-                toggle_frame.Color = toggle.current == true and theme.accent or theme.light_contrast
+                toggle_frame.Color = toggle.current == true and Color3.fromRGB(255,255,255) or theme.light_contrast
                 if toggle.current then
                     local toggle_con toggle_con = rs.RenderStepped:Connect(function()
                         if toggle.current then
-                            local h, s, v = theme.accent:ToHSV()
+                            local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
                             toggle_inline.Color = Color3.fromHSV(h, 0.44, v)
                         else
                             toggle_inline.Color = theme.inline
@@ -2484,7 +2484,7 @@ do
         local slider_slide = utility:Create("Frame", {Vector2.new(1,1), slider_inline}, {
             Size = utility:Size(0, (slider_frame.Size.X / (slider.max - slider.min) * (slider.current - slider.min)), 1, -2, slider_inline),
             Position = utility:Position(0, 1, 0, 1, slider_inline),
-            Color = theme.accent,
+            Color = Color3.fromRGB(255,255,255),
             Visible = page.open
         }, section.visibleContent)
         --
@@ -2552,7 +2552,7 @@ do
             end
             if Input.UserInputType == Enum.UserInputType.MouseMovement and slider_outline.Visible and window.isVisible then
                 if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + slider.axis, section.section_frame.Position.X + section.section_frame.Size.X, section.section_frame.Position.Y + slider.axis + 27}) and not window:IsOverContent() then
-                    local h, s, v = theme.accent:ToHSV()
+                    local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
                     slider_inline.Color = Color3.fromHSV(h, 0.44, v)
                 else
                     slider_inline.Color = theme.inline
@@ -2908,10 +2908,10 @@ do
         function dropdown:Update()
             if dropdown.open and dropdown.holder.inline then
                 for i,v in pairs(dropdown.holder.buttons) do
-                    v[1].Color = v[1].Text == tostring(dropdown.current) and theme.accent or theme.textcolor
+                    v[1].Color = v[1].Text == tostring(dropdown.current) and Color3.fromRGB(255,255,255) or theme.textcolor
                     local dropdown_connect dropdown_connect = rs.RenderStepped:Connect(function()
                         if dropdown.open and v[1].Text == tostring(dropdown.current) then
-                            v[1].Color = theme.accent
+                            v[1].Color = Color3.fromRGB(255,255,255)
                         else
                             dropdown_connect:Disconnect()
                         end
@@ -3043,7 +3043,7 @@ do
         library.changed[#library.changed + 1] = function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseMovement and dropdown_outline.Visible and window.isVisible then
                 if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + dropdown.axis, section.section_frame.Position.X + section.section_frame.Size.X, section.section_frame.Position.Y + dropdown.axis + 15 +  20}) and not window:IsOverContent() then
-                    local h, s, v = theme.accent:ToHSV()
+                    local h, s, v = Color3.fromRGB(255,255,255):ToHSV()
                     dropdown_inline.Color = Color3.fromHSV(h, 0.44, v)
                 else
                     dropdown_inline.Color = theme.inline
