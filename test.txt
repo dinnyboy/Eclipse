@@ -916,7 +916,6 @@ function library:init()
         if input.UserInputType == Enum.UserInputType.MouseMovement then
 
             mousemove:Fire(inputservice:GetMouseLocation());
-            updateCursor();
 
             if library.CurrentTooltip ~= nil then
                 local mousePos = inputservice:GetMouseLocation()
@@ -971,7 +970,7 @@ function library:init()
             tooltipObjects.background.Visible = false;
         end
 
-        updateCursor();
+
         for _,window in next, self.windows do
             window:SetOpen(bool);
          end
