@@ -64,7 +64,7 @@ local library = {
     open = false;
     opening = false;
     hasInit = false;
-    cheatname = startupArgs.cheatname or '<3';
+    cheatname = startupArgs.cheatname or 'octohook';
     gamename = startupArgs.gamename or 'universal';
     fileext = startupArgs.fileext or '.txt';
 }
@@ -832,7 +832,7 @@ function library:init()
         )
     end]]
 
-    end
+
 
     local screenGui = Instance.new('ScreenGui');
     if syn then syn.protect_gui(screenGui); end
@@ -1089,7 +1089,7 @@ function library:init()
         local i = 0
         for v in next, self.notifications do
             utility:Tween(v.holder, 'Position', newUDim2(0,0,0, 75 + (i * 30)), .15)
-            i = i +  1
+            i += 1
         end
     end
 
@@ -3979,11 +3979,14 @@ function library:init()
                     ----------------------
 
                     function box:SetText(str)
+                        if typeof(str) == 'string' then
                             self.text = str;
                             self.objects.text.Text = str;
+                        end
                     end
 
                     function box:SetInput(str, nocallback)
+                        if typeof(str) == 'string' then
                             self.input = str;
                             self.objects.inputText.Text = str;
                             if not nocallback then
@@ -3992,6 +3995,7 @@ function library:init()
                             if self.flag then
                                 library.flags[self.flag] = str;
                             end
+                        end
                     end
 
                     local c
