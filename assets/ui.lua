@@ -386,8 +386,8 @@ do
     --
     function library:New(info)
 		local info = info or {}
-        local name = info.name or info.Name or "devine.streamproof"
-        local title = info.title or info.Title or "devine.streamproof"
+        local name = info.name or info.Name or "devine"
+        local title = info.title or info.Title or "devine"
         local size = info.size or info.Size or Vector2.new(504,604)
         local accent = info.accent or info.Accent or info.color or info.Color or theme.accent
         --
@@ -776,7 +776,7 @@ do
             --
             spawn(function()
                 while wait(0.1) do
-                    watermark_title.Text = string.format("devine.streamproof | Da Hood | Buyer | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
+                    watermark_title.Text = string.format("devine | Da Hood | Buyer | Ping : " .. tostring(library.shared.ping) .. "ms | FPS : " .. tostring(library.shared.fps), window.name)
                     window.watermark:UpdateSize()
                 end
             end)
