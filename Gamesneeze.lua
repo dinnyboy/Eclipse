@@ -2961,764 +2961,756 @@ end
         return Unpack(multiSection.sections)
     end
     --
-    function pages:PlayerList(info)
-        local info = info or {}
-        local player
-        local callback = info.callback or info.Cllback or function() end 
-        --
-        local window = self.window
-        local page = self
-        --
-        local playerList = {window = window, page = page, visibleContent = {}, buttons = {}, currentAxis = 20, scrollingindex = 0, scrolling = {false, nil}, items = {}, players = {}}
-        --
-        local playerList_inline = utility:Create("Frame", {Vector2.new(5,5), window.tab_frame}, {
-            Size = utility:Size(1, -10, 0, ((10 * 22) + 4) + 20 + 60 + 12, window.tab_frame),
-            Position = utility:Position(0, 5, 0, 5, window.tab_frame),
-            Color = theme.inline,
-            Visible = page.open
-        }, playerList.visibleContent);playerList["playerList_inline"] = playerList_inline
-        --
-        library.colors[playerList_inline] = {
-            Color = "inline"
-        }
-        --
-        local playerList_outline = utility:Create("Frame", {Vector2.new(1,1), playerList_inline}, {
-            Size = utility:Size(1, -2, 1, -2, playerList_inline),
-            Position = utility:Position(0, 1, 0, 1, playerList_inline),
-            Color = theme.outline,
-            Visible = page.open
-        }, playerList.visibleContent);playerList["playerList_outline"] = playerList_outline
-        --
-        library.colors[playerList_outline] = {
-            Color = "outline"
-        }
-        --
-        local playerList_frame = utility:Create("Frame", {Vector2.new(1,1), playerList_outline}, {
-            Size = utility:Size(1, -2, 1, -2, playerList_outline),
-            Position = utility:Position(0, 1, 0, 1, playerList_outline),
-            Color = theme.darkcontrast,
-            Visible = page.open
-        }, playerList.visibleContent);playerList["playerList_frame"] = playerList_frame
-        --
-        library.colors[playerList_frame] = {
-            Color = "darkcontrast"
-        }
-        --
-        local playerList_accent = utility:Create("Frame", {Vector2.new(0,0), playerList_frame}, {
-            Size = utility:Size(1, 0, 0, 2, playerList_frame),
-            Position = utility:Position(0, 0, 0, 0, playerList_frame),
-            Color = theme.accent,
-            Visible = page.open
-        }, playerList.visibleContent);playerList["playerList_accent"] = playerList_accent
-        --
-        library.colors[playerList_accent] = {
-            Color = "accent"
-        }
-        --
-        local playerList_title = utility:Create("TextLabel", {Vector2.new(3,3), playerList_frame}, {
-            Text = "Player List - 0 Players",
-            Size = theme.textsize,
-            Font = theme.font,
-            Color = theme.textcolor,
-            OutlineColor = theme.textborder,
-            Position = utility:Position(0, 3, 0, 3, playerList_frame),
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[playerList_title] = {
-            OutlineColor = "textborder",
-            Color = "textcolor"
-        }
-        --
-        local list_outline = utility:Create("Frame", {Vector2.new(4,20), playerList_frame}, {
-            Size = utility:Size(1, -8, 0, ((10 * 22) + 4), playerList_frame),
-            Position = utility:Position(0, 4, 0, 20, playerList_frame),
-            Color = theme.outline,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[list_outline] = {
-            Color = "outline"
-        }
-        --
-        local list_inline = utility:Create("Frame", {Vector2.new(1,1), list_outline}, {
-            Size = utility:Size(1, -2, 1, -2, list_outline),
-            Position = utility:Position(0, 1, 0, 1, list_outline),
-            Color = theme.inline,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[list_inline] = {
-            Color = "inline"
-        }
-        --
-        local list_frame = utility:Create("Frame", {Vector2.new(1,1), list_inline}, {
-            Size = utility:Size(1, -10, 1, -2, list_inline),
-            Position = utility:Position(0, 1, 0, 1, list_inline),
-            Color = theme.lightcontrast,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[list_frame] = {
-            Color = "lightcontrast"
-        }
-        --
-        local list_scroll = utility:Create("Frame", {Vector2.new(list_inline.Size.X - 9,1), list_inline}, {
-            Size = utility:Size(0, 8, 1, -2, list_inline),
-            Position = utility:Position(1, -9, 0, 1, list_inline),
-            Color = theme.darkcontrast,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[list_scroll] = {
-            Color = "darkcontrast"
-        }
-        --
-        local list_bar = utility:Create("Frame", {Vector2.new(1,1), list_scroll}, {
-            Size = utility:Size(1, -2, 0.5, -2, list_scroll),
-            Position = utility:Position(0, 1, 0, 1, list_scroll),
-            Color = theme.accent,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[list_bar] = {
-            Color = "accent"
-        }
-        --
-        local list_gradient = utility:Create("Image", {Vector2.new(0,0), list_frame}, {
-            Size = utility:Size(1, 0, 1, 0, list_frame),
-            Position = utility:Position(0, 0, 0 , 0, list_frame),
-            Transparency = 0.25,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        for Index = 1, 10 do
-            local item = {}
-            local listitemposition = (Index - 1) * 22
+        function pages:PlayerList(info)
+            local info = info or {}
+			 local callback = info.callback or info.Cllback or function() end             
+
+            local window = self.window
+            local page = self
             --
-            local listitem_line
+            local playerList = {window = window, page = page, visibleContent = {}, buttons = {}, currentAxis = 20, scrollingindex = 0, scrolling = {false, nil}, items = {}, players = {}}
             --
-            if Index ~= 10 then
-                listitem_line = utility:Create("Frame", {Vector2.new(3,listitemposition + 21), list_frame}, {
-                    Size = utility:Size(1, -6, 0, 2, list_frame),
-                    Position = utility:Position(0, 3, 0, listitemposition + 21, list_frame),
+            local playerList_inline = utility:Create("Frame", {Vector2.new(5,5), window.tab_frame}, {
+                Size = utility:Size(1, -10, 0, ((10 * 22) + 4) + 20 + 60 + 12, window.tab_frame),
+                Position = utility:Position(0, 5, 0, 5, window.tab_frame),
+                Color = theme.inline,
+                Visible = page.open
+            }, playerList.visibleContent);playerList["playerList_inline"] = playerList_inline
+            --
+            library.colors[playerList_inline] = {
+                Color = "inline"
+            }
+            --
+            local playerList_outline = utility:Create("Frame", {Vector2.new(1,1), playerList_inline}, {
+                Size = utility:Size(1, -2, 1, -2, playerList_inline),
+                Position = utility:Position(0, 1, 0, 1, playerList_inline),
+                Color = theme.outline,
+                Visible = page.open
+            }, playerList.visibleContent);playerList["playerList_outline"] = playerList_outline
+            --
+            library.colors[playerList_outline] = {
+                Color = "outline"
+            }
+            --
+            local playerList_frame = utility:Create("Frame", {Vector2.new(1,1), playerList_outline}, {
+                Size = utility:Size(1, -2, 1, -2, playerList_outline),
+                Position = utility:Position(0, 1, 0, 1, playerList_outline),
+                Color = theme.darkcontrast,
+                Visible = page.open
+            }, playerList.visibleContent);playerList["playerList_frame"] = playerList_frame
+            --
+            library.colors[playerList_frame] = {
+                Color = "darkcontrast"
+            }
+            --
+            local playerList_accent = utility:Create("Frame", {Vector2.new(0,0), playerList_frame}, {
+                Size = utility:Size(1, 0, 0, 2, playerList_frame),
+                Position = utility:Position(0, 0, 0, 0, playerList_frame),
+                Color = theme.accent,
+                Visible = page.open
+            }, playerList.visibleContent);playerList["playerList_accent"] = playerList_accent
+            --
+            library.colors[playerList_accent] = {
+                Color = "accent"
+            }
+            --
+            local playerList_title = utility:Create("TextLabel", {Vector2.new(3,3), playerList_frame}, {
+                Text = "Player List - 0 Players",
+                Size = theme.textsize,
+                Font = theme.font,
+                Color = theme.textcolor,
+                OutlineColor = theme.textborder,
+                Position = utility:Position(0, 3, 0, 3, playerList_frame),
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            library.colors[playerList_title] = {
+                OutlineColor = "textborder",
+                Color = "textcolor"
+            }
+            --
+            local list_outline = utility:Create("Frame", {Vector2.new(4,20), playerList_frame}, {
+                Size = utility:Size(1, -8, 0, ((10 * 22) + 4), playerList_frame),
+                Position = utility:Position(0, 4, 0, 20, playerList_frame),
+                Color = theme.outline,
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            library.colors[list_outline] = {
+                Color = "outline"
+            }
+            --
+            local list_inline = utility:Create("Frame", {Vector2.new(1,1), list_outline}, {
+                Size = utility:Size(1, -2, 1, -2, list_outline),
+                Position = utility:Position(0, 1, 0, 1, list_outline),
+                Color = theme.inline,
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            library.colors[list_inline] = {
+                Color = "inline"
+            }
+            --
+            local list_frame = utility:Create("Frame", {Vector2.new(1,1), list_inline}, {
+                Size = utility:Size(1, -10, 1, -2, list_inline),
+                Position = utility:Position(0, 1, 0, 1, list_inline),
+                Color = theme.lightcontrast,
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            library.colors[list_frame] = {
+                Color = "lightcontrast"
+            }
+            --
+            local list_scroll = utility:Create("Frame", {Vector2.new(list_inline.Size.X - 9,1), list_inline}, {
+                Size = utility:Size(0, 8, 1, -2, list_inline),
+                Position = utility:Position(1, -9, 0, 1, list_inline),
+                Color = theme.darkcontrast,
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            library.colors[list_scroll] = {
+                Color = "darkcontrast"
+            }
+            --
+            local list_bar = utility:Create("Frame", {Vector2.new(1,1), list_scroll}, {
+                Size = utility:Size(1, -2, 0.5, -2, list_scroll),
+                Position = utility:Position(0, 1, 0, 1, list_scroll),
+                Color = theme.accent,
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            library.colors[list_bar] = {
+                Color = "accent"
+            }
+            --
+            local list_gradient = utility:Create("Image", {Vector2.new(0,0), list_frame}, {
+                Size = utility:Size(1, 0, 1, 0, list_frame),
+                Position = utility:Position(0, 0, 0 , 0, list_frame),
+                Transparency = 0.25,
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            for Index = 1, 10 do
+                local item = {}
+                local listitemposition = (Index - 1) * 22
+                --
+                local listitem_line
+                --
+                if Index ~= 10 then
+                    listitem_line = utility:Create("Frame", {Vector2.new(3,listitemposition + 21), list_frame}, {
+                        Size = utility:Size(1, -6, 0, 2, list_frame),
+                        Position = utility:Position(0, 3, 0, listitemposition + 21, list_frame),
+                        Transparency = 0,
+                        Color = theme.outline,
+                        Visible = page.open
+                    }, playerList.visibleContent)
+                    --
+                    library.colors[listitem_line] = {
+                        Color = "outline"
+                    }
+                end
+                --
+                local listitem_firstline = utility:Create("Frame", {Vector2.new(1/3 * list_frame.Size.X,listitemposition + 3), list_frame}, {
+                    Size = utility:Size(0, 2, 0, 16, list_frame),
+                    Position = utility:Position(1/3, 1, 0, listitemposition + 3, list_frame),
                     Transparency = 0,
                     Color = theme.outline,
                     Visible = page.open
                 }, playerList.visibleContent)
                 --
-                library.colors[listitem_line] = {
+                library.colors[listitem_firstline] = {
                     Color = "outline"
                 }
-            end
-            --
-            local listitem_firstline = utility:Create("Frame", {Vector2.new(1/3 * list_frame.Size.X,listitemposition + 3), list_frame}, {
-                Size = utility:Size(0, 2, 0, 16, list_frame),
-                Position = utility:Position(1/3, 1, 0, listitemposition + 3, list_frame),
-                Transparency = 0,
-                Color = theme.outline,
-                Visible = page.open
-            }, playerList.visibleContent)
-            --
-            library.colors[listitem_firstline] = {
-                Color = "outline"
-            }
-            --
-            local listitem_secondline = utility:Create("Frame", {Vector2.new(2/3 * list_frame.Size.X,listitemposition + 3), list_frame}, {
-                Size = utility:Size(0, 2, 0, 16, list_frame),
-                Position = utility:Position(2/3, 1, 0, listitemposition + 3, list_frame),
-                Transparency = 0,
-                Color = theme.outline,
-                Visible = page.open
-            }, playerList.visibleContent)
-            --
-            library.colors[listitem_secondline] = {
-                Color = "outline"
-            }
-            --
-            local listitem_username = utility:Create("TextLabel", {Vector2.new(4, 4 + listitemposition), list_frame}, {
-                Text = "",
-                Size = theme.textsize,
-                Font = theme.font,
-                Color = theme.textcolor,
-                OutlineColor = theme.textborder,
-                Position = utility:Position(0, 4, 0, 4 + listitemposition, list_frame),
-                Visible = page.open
-            }, playerList.visibleContent)
-            --
-            library.colors[listitem_username] = {
-                OutlineColor = "textborder",
-                Color = "textcolor"
-            }
-            --
-            local listitem_team = utility:Create("TextLabel", {Vector2.new(6 + (1/3 * list_frame.Size.X), 4 + listitemposition), list_frame}, {
-                Text = "",
-                Size = theme.textsize,
-                Font = theme.font,
-                Color = theme.textcolor,
-                OutlineColor = theme.textborder,
-                Position = utility:Position(1/3, 6, 0, 4 + listitemposition, list_frame),
-                Visible = page.open
-            }, playerList.visibleContent)
-            --
-            library.colors[listitem_team] = {
-                OutlineColor = "textborder",
-                Color = "textcolor"
-            }
-            --
-            local listitem_status = utility:Create("TextLabel", {Vector2.new(6 + (2/3 * list_frame.Size.X), 4 + listitemposition), list_frame}, {
-                Text = "",
-                Size = theme.textsize,
-                Font = theme.font,
-                Color = theme.textcolor,
-                OutlineColor = theme.textborder,
-                Position = utility:Position(2/3, 6, 0, 4 + listitemposition, list_frame),
-                Visible = page.open
-            }, playerList.visibleContent)
-            --
-            library.colors[listitem_status] = {
-                OutlineColor = "textborder",
-                Color = "textcolor"
-            }
-            --
-            function item:Set(enabled, selected)
-                if listitem_line then
-                    if window.isVisible then
-                        listitem_line.Transparency = enabled and 0.3 or 0
+                --
+                local listitem_secondline = utility:Create("Frame", {Vector2.new(2/3 * list_frame.Size.X,listitemposition + 3), list_frame}, {
+                    Size = utility:Size(0, 2, 0, 16, list_frame),
+                    Position = utility:Position(2/3, 1, 0, listitemposition + 3, list_frame),
+                    Transparency = 0,
+                    Color = theme.outline,
+                    Visible = page.open
+                }, playerList.visibleContent)
+                --
+                library.colors[listitem_secondline] = {
+                    Color = "outline"
+                }
+                --
+                local listitem_username = utility:Create("TextLabel", {Vector2.new(4, 4 + listitemposition), list_frame}, {
+                    Text = "",
+                    Size = theme.textsize,
+                    Font = theme.font,
+                    Color = theme.textcolor,
+                    OutlineColor = theme.textborder,
+                    Position = utility:Position(0, 4, 0, 4 + listitemposition, list_frame),
+                    Visible = page.open
+                }, playerList.visibleContent)
+                --
+                library.colors[listitem_username] = {
+                    OutlineColor = "textborder",
+                    Color = "textcolor"
+                }
+                --
+                local listitem_team = utility:Create("TextLabel", {Vector2.new(6 + (1/3 * list_frame.Size.X), 4 + listitemposition), list_frame}, {
+                    Text = "",
+                    Size = theme.textsize,
+                    Font = theme.font,
+                    Color = theme.textcolor,
+                    OutlineColor = theme.textborder,
+                    Position = utility:Position(1/3, 6, 0, 4 + listitemposition, list_frame),
+                    Visible = page.open
+                }, playerList.visibleContent)
+                --
+                library.colors[listitem_team] = {
+                    OutlineColor = "textborder",
+                    Color = "textcolor"
+                }
+                --
+                local listitem_status = utility:Create("TextLabel", {Vector2.new(6 + (2/3 * list_frame.Size.X), 4 + listitemposition), list_frame}, {
+                    Text = "",
+                    Size = theme.textsize,
+                    Font = theme.font,
+                    Color = theme.textcolor,
+                    OutlineColor = theme.textborder,
+                    Position = utility:Position(2/3, 6, 0, 4 + listitemposition, list_frame),
+                    Visible = page.open
+                }, playerList.visibleContent)
+                --
+                library.colors[listitem_status] = {
+                    OutlineColor = "textborder",
+                    Color = "textcolor"
+                }
+                --
+                function item:Set(enabled, selected)
+                    if listitem_line then
+                        if window.isVisible then
+                            listitem_line.Transparency = enabled and 0.3 or 0
+                        end
+                        --
+                        utility:UpdateTransparency(listitem_line, enabled and 0.3 or 0)
                     end
                     --
-                    utility:UpdateTransparency(listitem_line, enabled and 0.3 or 0)
-                end
-                --
-                if window.isVisible then
-                    listitem_firstline.Transparency = enabled and 0.3 or 0
-                    listitem_secondline.Transparency = enabled and 0.3 or 0
-                end
-                --
-                utility:UpdateTransparency(listitem_firstline, enabled and 0.3 or 0)
-                utility:UpdateTransparency(listitem_secondline, enabled and 0.3 or 0)
-                --
-                if enabled then
-                    listitem_username.Text = selected[2]
-                    listitem_team.Text = selected[1].Team and tostring(selected[1].Team) or "None"
-                    listitem_status.Text = selected[3]
+                    if window.isVisible then
+                        listitem_firstline.Transparency = enabled and 0.3 or 0
+                        listitem_secondline.Transparency = enabled and 0.3 or 0
+                    end
                     --
-                    listitem_username.Color = selected[4] and theme.accent or theme.textcolor
-                    listitem_status.Color = selected[3] == "Local Player" and Color3.fromRGB(200, 55, 200) or selected[3] == "Priority" and Color3.fromRGB(55, 55, 200) or selected[3] == "Friend" and Color3.fromRGB(55, 200, 55) or selected[3] == "Enemy" and Color3.fromRGB(200, 55, 55) or theme.textcolor
+                    utility:UpdateTransparency(listitem_firstline, enabled and 0.3 or 0)
+                    utility:UpdateTransparency(listitem_secondline, enabled and 0.3 or 0)
                     --
-                    library.colors[listitem_username] = {
-                        OutlineColor = "textborder",
-                        Color = selected[4] and "accent" or "textcolor"
-                    }
-                    -- 
-                    library.colors[listitem_status] = {
-                        OutlineColor = "textborder",
-                        Color = selected[3] == "None" and "textcolor" or nil
-                    }
-                else
-                    listitem_username.Text = ""
-                    listitem_team.Text = ""
-                    listitem_status.Text = ""
+                    if enabled then
+                        listitem_username.Text = selected[2]
+                        listitem_team.Text = selected[1].Team and tostring(selected[1].Team) or "None"
+                        listitem_status.Text = selected[3]
+                        --
+                        listitem_username.Color = selected[4] and theme.accent or theme.textcolor
+                        listitem_status.Color = selected[3] == "Local Player" and Color3.fromRGB(200, 55, 200) or selected[3] == "Priority" and Color3.fromRGB(55, 55, 200) or selected[3] == "Friend" and Color3.fromRGB(55, 200, 55) or selected[3] == "Enemy" and Color3.fromRGB(200, 55, 55) or theme.textcolor
+                        --
+                        library.colors[listitem_username] = {
+                            OutlineColor = "textborder",
+                            Color = selected[4] and "accent" or "textcolor"
+                        }
+                        -- 
+                        library.colors[listitem_status] = {
+                            OutlineColor = "textborder",
+                            Color = selected[3] == "None" and "textcolor" or nil
+                        }
+                    else
+                        listitem_username.Text = ""
+                        listitem_team.Text = ""
+                        listitem_status.Text = ""
+                    end
                 end
+                --
+                playerList.items[#playerList.items + 1] = item
             end
             --
-            playerList.items[#playerList.items + 1] = item
-        end
-        --
-        local options_iconoutline = utility:Create("Frame", {Vector2.new(0,list_outline.Size.Y + 4), list_outline}, {
-            Size = utility:Size(0, 60, 0, 60, list_outline),
-            Position = utility:Position(0, 0, 1, 4, list_outline),
-            Color = theme.outline,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[options_iconoutline] = {
-            Color = "outline"
-        }
-        --
-        local options_iconinline = utility:Create("Frame", {Vector2.new(1,1), options_iconoutline}, {
-            Size = utility:Size(1, -2, 1, -2, options_iconoutline),
-            Position = utility:Position(0, 1, 0, 1, options_iconoutline),
-            Color = theme.inline,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[options_iconinline] = {
-            Color = "inline"
-        }
-        --
-        local options_iconframe = utility:Create("Frame", {Vector2.new(1,1), options_iconinline}, {
-            Size = utility:Size(1, -2, 1, -2, options_iconinline),
-            Position = utility:Position(0, 1, 0, 1, options_iconinline),
-            Color = theme.lightcontrast,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[options_iconframe] = {
-            Color = "lightcontrast"
-        }
-        --
-        local options_avatar = utility:Create("Image", {Vector2.new(0,0), options_iconframe}, {
-            Size = utility:Size(1, 0, 1, 0, options_iconframe),
-            Position = utility:Position(0, 0, 0 , 0, options_iconframe),
-            Transparency = 0.8,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        local options_loadingtext = utility:Create("TextLabel", {Vector2.new((options_iconoutline.Size.X / 2) - 1, (options_iconoutline.Size.X / 2) - 10), options_iconframe}, {
-            Text = "..?",
-            Size = theme.textsize,
-            Font = theme.font,
-            Color = theme.textdark,
-            OutlineColor = theme.textborder,
-            Position = utility:Position(0.5, -1, 0.5, -10, options_iconframe),
-            Center = true,
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[options_loadingtext] = {
-            OutlineColor = "textborder",
-            Color = "textdark"
-        }
-        --
-        local options_title = utility:Create("TextLabel", {Vector2.new(options_iconoutline.Size.X + 5, 0), options_iconoutline}, {
-            Text = "No player selected.", -- ("Display Name : %s\nName : %s\nHealth : %s/%s"):format("gg_bbot", "1envo", "100", "100")
-            Size = theme.textsize,
-            Font = theme.font,
-            Color = theme.textcolor,
-            OutlineColor = theme.textborder,
-            Position = utility:Position(1, 5, 0, 0, options_iconoutline),
-            Visible = page.open
-        }, playerList.visibleContent)
-        --
-        library.colors[options_title] = {
-            OutlineColor = "textborder",
-            Color = "textcolor"
-        }
-        --
-        for Index = 1, 1 do
-            local button = {
-                open = false,
-                current = "None",
-                options = {"None", "Friend", "Enemy", "Priority"},
-                holder = {buttons = {}, drawings = {}},
-                selection = nil
-            }
-            --
-            local button_outline = utility:Create("Frame", {Vector2.new(list_outline.Size.X - 180, list_outline.Size.Y + (Index == 1 and 10 or 36)), list_outline}, {
-                Size = utility:Size(0, 180, 0, 22, list_outline),
-                Position = utility:Position(1, -180, 1, Index == 1 and 10 or 36, list_outline),
+            local options_iconoutline = utility:Create("Frame", {Vector2.new(0,list_outline.Size.Y + 4), list_outline}, {
+                Size = utility:Size(0, 60, 0, 60, list_outline),
+                Position = utility:Position(0, 0, 1, 4, list_outline),
                 Color = theme.outline,
                 Visible = page.open
             }, playerList.visibleContent)
             --
-            library.colors[button_outline] = {
+            library.colors[options_iconoutline] = {
                 Color = "outline"
             }
             --
-            local button_inline = utility:Create("Frame", {Vector2.new(1,1), button_outline}, {
-                Size = utility:Size(1, -2, 1, -2, button_outline),
-                Position = utility:Position(0, 1, 0, 1, button_outline),
+            local options_iconinline = utility:Create("Frame", {Vector2.new(1,1), options_iconoutline}, {
+                Size = utility:Size(1, -2, 1, -2, options_iconoutline),
+                Position = utility:Position(0, 1, 0, 1, options_iconoutline),
                 Color = theme.inline,
                 Visible = page.open
             }, playerList.visibleContent)
             --
-            library.colors[button_inline] = {
+            library.colors[options_iconinline] = {
                 Color = "inline"
             }
             --
-            local button_frame = utility:Create("Frame", {Vector2.new(1,1), button_inline}, {
-                Size = utility:Size(1, -2, 1, -2, button_inline),
-                Position = utility:Position(0, 1, 0, 1, button_inline),
+            local options_iconframe = utility:Create("Frame", {Vector2.new(1,1), options_iconinline}, {
+                Size = utility:Size(1, -2, 1, -2, options_iconinline),
+                Position = utility:Position(0, 1, 0, 1, options_iconinline),
                 Color = theme.lightcontrast,
                 Visible = page.open
             }, playerList.visibleContent)
             --
-            library.colors[button_frame] = {
+            library.colors[options_iconframe] = {
                 Color = "lightcontrast"
             }
             --
-            local button_gradient = utility:Create("Image", {Vector2.new(0,0), button_frame}, {
-                Size = utility:Size(1, 0, 1, 0, button_frame),
-                Position = utility:Position(0, 0, 0 , 0, button_frame),
-                Transparency = 0.5,
+            local options_avatar = utility:Create("Image", {Vector2.new(0,0), options_iconframe}, {
+                Size = utility:Size(1, 0, 1, 0, options_iconframe),
+                Position = utility:Position(0, 0, 0 , 0, options_iconframe),
+                Transparency = 0.8,
                 Visible = page.open
             }, playerList.visibleContent)
             --
-            local button_title = utility:Create("TextLabel", {Vector2.new(button_frame.Size.X/2,1), button_frame}, {
-                Text = Index == 1 and "Prioritise" or "Friendly",
+            local options_loadingtext = utility:Create("TextLabel", {Vector2.new((options_iconoutline.Size.X / 2) - 1, (options_iconoutline.Size.X / 2) - 10), options_iconframe}, {
+                Text = "..?",
+                Size = theme.textsize,
+                Font = theme.font,
+                Color = theme.textdark,
+                OutlineColor = theme.textborder,
+                Position = utility:Position(0.5, -1, 0.5, -10, options_iconframe),
+                Center = true,
+                Visible = page.open
+            }, playerList.visibleContent)
+            --
+            library.colors[options_loadingtext] = {
+                OutlineColor = "textborder",
+                Color = "textdark"
+            }
+            --
+            local options_title = utility:Create("TextLabel", {Vector2.new(options_iconoutline.Size.X + 5, 0), options_iconoutline}, {
+                Text = "No player selected.", -- ("Display Name : %s\nName : %s\nHealth : %s/%s"):format("gg_bbot", "1envo", "100", "100")
                 Size = theme.textsize,
                 Font = theme.font,
                 Color = theme.textcolor,
                 OutlineColor = theme.textborder,
-                Center = true,
-                Position = utility:Position(0.5, 0, 0, 1, button_frame),
+                Position = utility:Position(1, 5, 0, 0, options_iconoutline),
                 Visible = page.open
             }, playerList.visibleContent)
             --
-            library.colors[button_title] = {
+            library.colors[options_title] = {
                 OutlineColor = "textborder",
                 Color = "textcolor"
             }
             --
-            local button_image = utility:Create("Image", {Vector2.new(button_frame.Size.X - 15,button_frame.Size.Y/2 - 3), button_frame}, {
-                Size = utility:Size(0, 9, 0, 6, button_frame),
-                Position = utility:Position(1, -15, 0.5, -3, button_frame),
-                Visible = page.open
-            }, playerList.visibleContent)
-            --
-            utility:LoadImage(button_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
-            --
-            function button:Update(Selection)
-                local Visible = Selection ~= nil and (Selection[1] ~= localplayer) or false
+            for Index = 1, 1 do
+                local button = {
+                    open = false,
+                    current = "None",
+                    options = {"None", "Friend", "Enemy", "Priority"},
+                    holder = {buttons = {}, drawings = {}},
+                    selection = nil
+                }
                 --
-                for Index, Value in pairs({button_outline, button_inline, button_frame, button_gradient, button_title, button_image}) do
-                    Value.Visible = page.open and Visible or false
-                    --
-                    if Visible then
-                        local fnd = table.find(playerList.visibleContent, Value)
-                        --
-                        if not fnd then
-                            playerList.visibleContent[#playerList.visibleContent + 1] = Value
-                        end
-                    else
-                        local fnd = table.find(playerList.visibleContent, Value)
-                        --
-                        if fnd then
-                            table.remove(playerList.visibleContent, fnd)
-                        end
-                    end
-                end
-                --
-                if Selection then
-                    button_title.Text = Selection[3]
-                    button.current = Selection[3]
-                    button.selection = Selection
-                else
-                    button.selection = nil
-                end
-            end
-            --
-            function button:UpdateValue()
-                if button.open and button.holder.inline then
-                    for i,v in pairs(button.holder.buttons) do
-                        local value = button.options[i]
-                        --
-                        v[1].Text = value
-                        v[1].Color = value == tostring(button.current) and theme.accent or theme.textcolor
-                        v[1].Position = utility:Position(0, value == tostring(button.current) and 8 or 6, 0, 2, v[2])
-                        library.colors[v[1]] = {
-                            Color = v[1].Text == tostring(button.current) and "accent" or "textcolor"
-                        }
-                        utility:UpdateOffset(v[1], {Vector2.new(v[1].Text == tostring(button.current) and 8 or 6, 2), v[2]})
-                    end
-                end
-            end
-            --
-            function button:Close()
-                button.open = not button.open
-                utility:LoadImage(button_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
-                --
-                for i,v in pairs(button.holder.drawings) do
-                    utility:Remove(v)
-                end
-                --
-                button.holder.drawings = {}
-                button.holder.buttons = {}
-                button.holder.inline = nil
-                --
-                window.currentContent.frame = nil
-                window.currentContent.button = nil
-            end
-            --
-            function button:Open()
-                window:CloseContent()
-                button.open = not button.open
-                utility:LoadImage(button_image, "arrow_up", "https://i.imgur.com/SL9cbQp.png")
-                --
-                local button_open_outline = utility:Create("Frame", {Vector2.new(0,21), button_outline}, {
-                    Size = utility:Size(1, 0, 0, 3 + (#button.options * 19), button_outline),
-                    Position = utility:Position(0, 0, 0, 21, button_outline),
+                local button_outline = utility:Create("Frame", {Vector2.new(list_outline.Size.X - 180, list_outline.Size.Y + (Index == 1 and 10 or 36)), list_outline}, {
+                    Size = utility:Size(0, 180, 0, 22, list_outline),
+                    Position = utility:Position(1, -180, 1, Index == 1 and 10 or 36, list_outline),
                     Color = theme.outline,
                     Visible = page.open
-                }, button.holder.drawings);button.holder.outline = button_open_outline
+                }, playerList.visibleContent)
                 --
-                library.colors[button_open_outline] = {
+                library.colors[button_outline] = {
                     Color = "outline"
                 }
                 --
-                local button_open_inline = utility:Create("Frame", {Vector2.new(1,1), button_open_outline}, {
-                    Size = utility:Size(1, -2, 1, -2, button_open_outline),
-                    Position = utility:Position(0, 1, 0, 1, button_open_outline),
+                local button_inline = utility:Create("Frame", {Vector2.new(1,1), button_outline}, {
+                    Size = utility:Size(1, -2, 1, -2, button_outline),
+                    Position = utility:Position(0, 1, 0, 1, button_outline),
                     Color = theme.inline,
                     Visible = page.open
-                }, button.holder.drawings);button.holder.inline = button_open_inline
+                }, playerList.visibleContent)
                 --
-                library.colors[button_open_inline] = {
+                library.colors[button_inline] = {
                     Color = "inline"
                 }
                 --
-                for Index = 1, (#button.options) do
-                    local Value = button.options[Index]
-                    --
-                    if Value then
-                        local button_value_frame = utility:Create("Frame", {Vector2.new(1,1 + (19 * (Index-1))), button_open_inline}, {
-                            Size = utility:Size(1, -2, 0, 18, button_open_inline),
-                            Position = utility:Position(0, 1, 0, 1 + (19 * (Index-1)), button_open_inline),
-                            Color = theme.lightcontrast,
-                            Visible = page.open
-                        }, button.holder.drawings)
-                        --
-                        library.colors[button_value_frame] = {
-                            Color = "lightcontrast"
-                        }
-                        --
-                        local button_value = utility:Create("TextLabel", {Vector2.new(Value == tostring(button.current) and 8 or 6,2), button_value_frame}, {
-                            Text = Value,
-                            Size = theme.textsize,
-                            Font = theme.font,
-                            Color = Value == tostring(button.current) and theme.accent or theme.textcolor,
-                            OutlineColor = theme.textborder,
-                            Position = utility:Position(0, Value == tostring(button.current) and 8 or 6, 0, 2, button_value_frame),
-                            Visible = page.open
-                        }, button.holder.drawings)
-                        --
-                        button.holder.buttons[#button.holder.buttons + 1] = {button_value, button_value_frame}
-                        --
-                        library.colors[button_value] = {
-                            OutlineColor = "textborder",
-                            Color = Value == tostring(button.current) and "accent" or "textcolor"
-                        }
-                    end
-                end
+                local button_frame = utility:Create("Frame", {Vector2.new(1,1), button_inline}, {
+                    Size = utility:Size(1, -2, 1, -2, button_inline),
+                    Position = utility:Position(0, 1, 0, 1, button_inline),
+                    Color = theme.lightcontrast,
+                    Visible = page.open
+                }, playerList.visibleContent)
                 --
-                window.currentContent.frame = button_open_inline
-                window.currentContent.button = button
-            end
-            --
-            utility:LoadImage(button_gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
-            --
-            library.began[#library.began + 1] = function(Input)
-                if Input.UserInputType == Enum.UserInputType.MouseButton1 and (button_outline.Visible or button.open) and window.isVisible then
-                    if Input.UserInputType == Enum.UserInputType.MouseButton1 and window.isVisible and button_outline.Visible then
-                        if button.open and button.holder.inline and utility:MouseOverDrawing({button.holder.inline.Position.X, button.holder.inline.Position.Y, button.holder.inline.Position.X + button.holder.inline.Size.X, button.holder.inline.Position.Y + button.holder.inline.Size.Y}) then
-                            for i,v in pairs(button.holder.buttons) do
-                                local value = button.options[i]
-                                --
-                                if utility:MouseOverDrawing({v[2].Position.X, v[2].Position.Y, v[2].Position.X + v[2].Size.X, v[2].Position.Y + v[2].Size.Y}) and value ~= button.current then
-                                    button.current = value
-                                    button_title.Text = button.current
-        
-                                    if button.selection then
-                                        button.selection[3] = value
-                                        callback(button.selection[1], button.selection[3])
-                                        playerList:Refresh(button.selection)
-                                    end
-        
-                                    button:UpdateValue()
-                                end
-                            end
-                        elseif utility:MouseOverDrawing({button_outline.Position.X, button_outline.Position.Y, button_outline.Position.X + button_outline.Size.X, button_outline.Position.Y + button_outline.Size.Y}) and not window:IsOverContent() then
-                            task.spawn(function()
-                                utility:LoadImage(button_gradient, "gradientdown", "https://i.imgur.com/DzrzUt3.png") 
-                                --
-                                task.wait(0.15)
-                                --
-                                utility:LoadImage(button_gradient, "gradient", "https://i.imgur.com/5hmlrjX.png") 
-                            end)
+                library.colors[button_frame] = {
+                    Color = "lightcontrast"
+                }
+                --
+                local button_gradient = utility:Create("Image", {Vector2.new(0,0), button_frame}, {
+                    Size = utility:Size(1, 0, 1, 0, button_frame),
+                    Position = utility:Position(0, 0, 0 , 0, button_frame),
+                    Transparency = 0.5,
+                    Visible = page.open
+                }, playerList.visibleContent)
+                --
+                local button_title = utility:Create("TextLabel", {Vector2.new(button_frame.Size.X/2,1), button_frame}, {
+                    Text = Index == 1 and "Prioritise" or "Friendly",
+                    Size = theme.textsize,
+                    Font = theme.font,
+                    Color = theme.textcolor,
+                    OutlineColor = theme.textborder,
+                    Center = true,
+                    Position = utility:Position(0.5, 0, 0, 1, button_frame),
+                    Visible = page.open
+                }, playerList.visibleContent)
+                --
+                library.colors[button_title] = {
+                    OutlineColor = "textborder",
+                    Color = "textcolor"
+                }
+                --
+                local button_image = utility:Create("Image", {Vector2.new(button_frame.Size.X - 15,button_frame.Size.Y/2 - 3), button_frame}, {
+                    Size = utility:Size(0, 9, 0, 6, button_frame),
+                    Position = utility:Position(1, -15, 0.5, -3, button_frame),
+                    Visible = page.open
+                }, playerList.visibleContent)
+                --
+                utility:LoadImage(button_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
+                --
+                function button:Update(Selection)
+                    local Visible = Selection ~= nil and (Selection[1] ~= localplayer) or false
+                    --
+                    for Index, Value in pairs({button_outline, button_inline, button_frame, button_gradient, button_title, button_image}) do
+                        Value.Visible = page.open and Visible or false
+                        --
+                        if Visible then
+                            local fnd = table.find(playerList.visibleContent, Value)
                             --
-                            if not button.open then
-                                button:Open()
-                            else
-                                button:Close()
+                            if not fnd then
+                                playerList.visibleContent[#playerList.visibleContent + 1] = Value
                             end
                         else
-                            if button.open then
-                                button:Close()
+                            local fnd = table.find(playerList.visibleContent, Value)
+                            --
+                            if fnd then
+                                table.remove(playerList.visibleContent, fnd)
                             end
                         end
-                    elseif Input.UserInputType == Enum.UserInputType.MouseButton1 and button.open then
-                        button:Close()
+                    end
+                    --
+                    if Selection then
+                        button_title.Text = Selection[3]
+                        button.current = Selection[3]
+                        button.selection = Selection
+                    else
+                        button.selection = nil
                     end
                 end
-            end
-            --
-            playerList.buttons[#playerList.buttons + 1] = button
-        end
-        --
-        utility:LoadImage(list_gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
-        --
-        function playerList:GetSelection()
-            for Index, Value in pairs(playerList.players) do
-                if Value[4] then
-                    return Value
-                end
-            end
-        end
-        --
-        function playerList:UpdateScroll()
-            if (#playerList.players - 10) > 0 then
-                playerList.scrollingindex = math.clamp(playerList.scrollingindex, 0, (#playerList.players - 10))
                 --
-                list_bar.Transparency = window.isVisible and 1 or 0
-                list_bar.Size = utility:Size(1, -2, (10 / #playerList.players), -2, list_scroll)
-                list_bar.Position = utility:Position(0, 1, 0, 1 + ((((list_scroll.Size.Y - 2) - list_bar.Size.Y) / (#playerList.players - 10)) * playerList.scrollingindex), list_scroll)
-                utility:UpdateTransparency(list_bar, 1)
-                utility:UpdateOffset(list_bar, {Vector2.new(1, 1 + ((((list_scroll.Size.Y - 2) - list_bar.Size.Y) / (#playerList.players - 10)) * playerList.scrollingindex)), list_scroll})
-            else
-                playerList.scrollingindex = 0
-                list_bar.Transparency = 0
-                utility:UpdateTransparency(list_bar, 0)
-            end
-            --
-            playerList:Refresh()
-        end
-        --
-        local lastselection
-        --
-        function playerList:Refresh(Relation)
-            for Index, Value in pairs(playerList.items) do
-                local Found = playerList.players[Index + playerList.scrollingindex]
-                --
-                if Found then
-                    Value:Set(true, Found)
-                else
-                    Value:Set(false)
-                end
-            end
-            --
-            if Relation then
-                library.Relations[Relation[1].UserId] = Relation[3] ~= "None" and Relation[3] or nil
-            end
-            --
-            playerList_title.Text = ("Player List - %s Players"):format(#playerList.items - 1)
-            --
-            local Selection = playerList:GetSelection()
-            --
-            playerList.buttons[1]:Update(Selection)
-            --
-            window:Move(window.main_frame.Position)
-            --
-            if Selection then
-                if lastselection ~= Selection then
-                    lastselection = Selection
-                    --
-                    options_avatar.Data = ""
-                    options_loadingtext.Text = "..?"
-                    --
-                    options_title.Text = ("User ID : %s\nDisplay Name : %s\nName : %s\nHealth : %s/%s"):format(Selection[1].UserId, Selection[1].DisplayName ~= "" and Selection[1].DisplayName or Selection[1].Name, Selection[1].Name, "100", "100")
-
- 
-
-         
-   
-                    --
-                    local imagedata = game:HttpGet(("https://www.roblox.com/headshot-thumbnail/image?userId=%s&width=100&height=100&format=png"):format(Selection[1].UserId))
-                    --
-                    if playerList:GetSelection() == Selection then
-                        options_avatar.Data = imagedata
-                        options_loadingtext.Text = ""
+                function button:UpdateValue()
+                    if button.open and button.holder.inline then
+                        for i,v in pairs(button.holder.buttons) do
+                            local value = button.options[i]
+                            --
+                            v[1].Text = value
+                            v[1].Color = value == tostring(button.current) and theme.accent or theme.textcolor
+                            v[1].Position = utility:Position(0, value == tostring(button.current) and 8 or 6, 0, 2, v[2])
+                            library.colors[v[1]] = {
+                                Color = v[1].Text == tostring(button.current) and "accent" or "textcolor"
+                            }
+                            utility:UpdateOffset(v[1], {Vector2.new(v[1].Text == tostring(button.current) and 8 or 6, 2), v[2]})
+                        end
                     end
                 end
-                  
-  
-            else
-                options_title.Text = "No player selected."
-                options_avatar.Data = ""
-                options_loadingtext.Text = "..?"
-                lastselection = nil
-            end
-        end
-        --
-        function playerList:Update() end
-        --
-        utility:Connection(plrs.PlayerAdded, function(Player)
-            playerList.players[#playerList.players + 1] = {Player, Player.Name, "None", false}
-            --
-            playerList:UpdateScroll()
-        end)
-        --
-        utility:Connection(plrs.PlayerRemoving, function(Player)
-            for Index, Value in pairs(playerList.players) do
-                if Value[1] == Player then
-                    Remove(playerList.players, Index)
+                --
+                function button:Close()
+                    button.open = not button.open
+                    utility:LoadImage(button_image, "arrow_down", "https://i.imgur.com/tVqy0nL.png")
+                    --
+                    for i,v in pairs(button.holder.drawings) do
+                        utility:Remove(v)
+                    end
+                    --
+                    button.holder.drawings = {}
+                    button.holder.buttons = {}
+                    button.holder.inline = nil
+                    --
+                    window.currentContent.frame = nil
+                    window.currentContent.button = nil
                 end
-            end
-            --
-            playerList:UpdateScroll()
-        end)
-        --
-        for Index, Value in pairs(plrs:GetPlayers()) do
-            playerList.players[#playerList.players + 1] = {Value, Value.Name, Value == localplayer and "Local Player" or "None", false}
-        end
-        --
-        library.began[#library.began + 1] = function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 and list_outline.Visible and window.isVisible then
-                if utility:MouseOverDrawing({list_bar.Position.X, list_bar.Position.Y, list_bar.Position.X + list_bar.Size.X, list_bar.Position.Y + list_bar.Size.Y}) then
-                    playerList.scrolling = {true, (utility:MouseLocation().Y - list_bar.Position.Y)}
-                elseif utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
-                    for Index = 1, 10 do
-                        local Found = playerList.players[Index + playerList.scrollingindex]
+                --
+                function button:Open()
+                    window:CloseContent()
+                    button.open = not button.open
+                    utility:LoadImage(button_image, "arrow_up", "https://i.imgur.com/SL9cbQp.png")
+                    --
+                    local button_open_outline = utility:Create("Frame", {Vector2.new(0,21), button_outline}, {
+                        Size = utility:Size(1, 0, 0, 3 + (#button.options * 19), button_outline),
+                        Position = utility:Position(0, 0, 0, 21, button_outline),
+                        Color = theme.outline,
+                        Visible = page.open
+                    }, button.holder.drawings);button.holder.outline = button_open_outline
+                    --
+                    library.colors[button_open_outline] = {
+                        Color = "outline"
+                    }
+                    --
+                    local button_open_inline = utility:Create("Frame", {Vector2.new(1,1), button_open_outline}, {
+                        Size = utility:Size(1, -2, 1, -2, button_open_outline),
+                        Position = utility:Position(0, 1, 0, 1, button_open_outline),
+                        Color = theme.inline,
+                        Visible = page.open
+                    }, button.holder.drawings);button.holder.inline = button_open_inline
+                    --
+                    library.colors[button_open_inline] = {
+                        Color = "inline"
+                    }
+                    --
+                    for Index = 1, (#button.options) do
+                        local Value = button.options[Index]
                         --
-                        if Found and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y + 2 + (22 * (Index - 1)), list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + 2 + (22 * (Index - 1)) + 22}) then
-                            if Found[4] then
-                                Found[4] = false
-                            else
-                                for Index2, Value2 in pairs(playerList.players) do
-                                    if Value2 ~= Found then
-                                        Value2[4] = false
+                        if Value then
+                            local button_value_frame = utility:Create("Frame", {Vector2.new(1,1 + (19 * (Index-1))), button_open_inline}, {
+                                Size = utility:Size(1, -2, 0, 18, button_open_inline),
+                                Position = utility:Position(0, 1, 0, 1 + (19 * (Index-1)), button_open_inline),
+                                Color = theme.lightcontrast,
+                                Visible = page.open
+                            }, button.holder.drawings)
+                            --
+                            library.colors[button_value_frame] = {
+                                Color = "lightcontrast"
+                            }
+                            --
+                            local button_value = utility:Create("TextLabel", {Vector2.new(Value == tostring(button.current) and 8 or 6,2), button_value_frame}, {
+                                Text = Value,
+                                Size = theme.textsize,
+                                Font = theme.font,
+                                Color = Value == tostring(button.current) and theme.accent or theme.textcolor,
+                                OutlineColor = theme.textborder,
+                                Position = utility:Position(0, Value == tostring(button.current) and 8 or 6, 0, 2, button_value_frame),
+                                Visible = page.open
+                            }, button.holder.drawings)
+                            --
+                            button.holder.buttons[#button.holder.buttons + 1] = {button_value, button_value_frame}
+                            --
+                            library.colors[button_value] = {
+                                OutlineColor = "textborder",
+                                Color = Value == tostring(button.current) and "accent" or "textcolor"
+                            }
+                        end
+                    end
+                    --
+                    window.currentContent.frame = button_open_inline
+                    window.currentContent.button = button
+                end
+                --
+                utility:LoadImage(button_gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
+                --
+                library.began[#library.began + 1] = function(Input)
+                    if Input.UserInputType == Enum.UserInputType.MouseButton1 and (button_outline.Visible or button.open) and window.isVisible then
+                        if Input.UserInputType == Enum.UserInputType.MouseButton1 and window.isVisible and button_outline.Visible then
+                            if button.open and button.holder.inline and utility:MouseOverDrawing({button.holder.inline.Position.X, button.holder.inline.Position.Y, button.holder.inline.Position.X + button.holder.inline.Size.X, button.holder.inline.Position.Y + button.holder.inline.Size.Y}) then
+                                for i,v in pairs(button.holder.buttons) do
+                                    local value = button.options[i]
+                                    --
+                                    if utility:MouseOverDrawing({v[2].Position.X, v[2].Position.Y, v[2].Position.X + v[2].Size.X, v[2].Position.Y + v[2].Size.Y}) and value ~= button.current then
+                                        button.current = value
+                                        button_title.Text = button.current
+            
+                                        if button.selection then
+                                            button.selection[3] = value
+											callback(button.selection[1], button.selection[3])
+                                            playerList:Refresh(button.selection)
+                                        end
+            
+                                        button:UpdateValue()
                                     end
                                 end
+                            elseif utility:MouseOverDrawing({button_outline.Position.X, button_outline.Position.Y, button_outline.Position.X + button_outline.Size.X, button_outline.Position.Y + button_outline.Size.Y}) and not window:IsOverContent() then
+                                task.spawn(function()
+                                    utility:LoadImage(button_gradient, "gradientdown", "https://i.imgur.com/DzrzUt3.png") 
+                                    --
+                                    task.wait(0.15)
+                                    --
+                                    utility:LoadImage(button_gradient, "gradient", "https://i.imgur.com/5hmlrjX.png") 
+                                end)
                                 --
-                                Found[4] = true
+                                if not button.open then
+                                    button:Open()
+                                else
+                                    button:Close()
+                                end
+                            else
+                                if button.open then
+                                    button:Close()
+                                end
                             end
+                        elseif Input.UserInputType == Enum.UserInputType.MouseButton1 and button.open then
+                            button:Close()
+                        end
+                    end
+                end
+                --
+                playerList.buttons[#playerList.buttons + 1] = button
+            end
+            --
+            utility:LoadImage(list_gradient, "gradient", "https://i.imgur.com/5hmlrjX.png")
+            --
+            function playerList:GetSelection()
+                for Index, Value in pairs(playerList.players) do
+                    if Value[4] then
+                        return Value
+                    end
+                end
+            end
+            --
+            function playerList:UpdateScroll()
+                if (#playerList.players - 10) > 0 then
+                    playerList.scrollingindex = math.clamp(playerList.scrollingindex, 0, (#playerList.players - 10))
+                    --
+                    list_bar.Transparency = window.isVisible and 1 or 0
+                    list_bar.Size = utility:Size(1, -2, (10 / #playerList.players), -2, list_scroll)
+                    list_bar.Position = utility:Position(0, 1, 0, 1 + ((((list_scroll.Size.Y - 2) - list_bar.Size.Y) / (#playerList.players - 10)) * playerList.scrollingindex), list_scroll)
+                    utility:UpdateTransparency(list_bar, 1)
+                    utility:UpdateOffset(list_bar, {Vector2.new(1, 1 + ((((list_scroll.Size.Y - 2) - list_bar.Size.Y) / (#playerList.players - 10)) * playerList.scrollingindex)), list_scroll})
+                else
+                    playerList.scrollingindex = 0
+                    list_bar.Transparency = 0
+                    utility:UpdateTransparency(list_bar, 0)
+                end
+                --
+                playerList:Refresh()
+            end
+            --
+            local lastselection
+            --
+            function playerList:Refresh(Relation)
+                for Index, Value in pairs(playerList.items) do
+                    local Found = playerList.players[Index + playerList.scrollingindex]
+                    --
+                    if Found then
+                        Value:Set(true, Found)
+                    else
+                        Value:Set(false)
+                    end
+                end
+                --
+                if Relation then
+                    library.Relations[Relation[1].UserId] = Relation[3] ~= "None" and Relation[3] or nil
+                end
+                --
+                playerList_title.Text = ("Player List - %s Players"):format(#playerList.players)
+                --
+                local Selection = playerList:GetSelection()
+                --
+                playerList.buttons[1]:Update(Selection)
+                --
+                window:Move(window.main_frame.Position)
+                --
+                if Selection then
+                    if lastselection ~= Selection then
+                        lastselection = Selection
+                        --
+                        options_avatar.Data = ""
+                        options_loadingtext.Text = "..?"
+                        --
+                        options_title.Text = ("User ID : %s\nDisplay Name : %s\nName : %s\nHealth : %s/%s"):format(Selection[1].UserId, Selection[1].DisplayName ~= "" and Selection[1].DisplayName or Selection[1].Name, Selection[1].Name, Selection[1].Character.Humanoid.Health, Selection[1].Character.Humanoid.MaxHealth)
+                        --
+                        local imagedata = game:HttpGet(("https://www.roblox.com/headshot-thumbnail/image?userId=%s&width=100&height=100&format=png"):format(Selection[1].UserId))
+                        --
+                        if playerList:GetSelection() == Selection then
+                            options_avatar.Data = imagedata
+                            options_loadingtext.Text = ""
+                        end
+                    end
+                else
+                    options_title.Text = "No player selected."
+                    options_avatar.Data = ""
+                    options_loadingtext.Text = "..?"
+                    lastselection = nil
+                end
+            end
+            --
+            function playerList:Update() end
+            --
+            utility:Connection(plrs.PlayerAdded, function(Player)
+                playerList.players[#playerList.players + 1] = {Player, Player.Name, "None", false}
+                --
+                playerList:UpdateScroll()
+            end)
+            --
+            utility:Connection(plrs.PlayerRemoving, function(Player)
+                for Index, Value in pairs(playerList.players) do
+                    if Value[1] == Player then
+                        Remove(playerList.players, Index)
+                    end
+                end
+                --
+                playerList:UpdateScroll()
+            end)
+            --
+            for Index, Value in pairs(plrs:GetPlayers()) do
+                playerList.players[#playerList.players + 1] = {Value, Value.Name, Value == localplayer and "Local Player" or "None", false}
+            end
+            --
+            library.began[#library.began + 1] = function(Input)
+                if Input.UserInputType == Enum.UserInputType.MouseButton1 and list_outline.Visible and window.isVisible then
+                    if utility:MouseOverDrawing({list_bar.Position.X, list_bar.Position.Y, list_bar.Position.X + list_bar.Size.X, list_bar.Position.Y + list_bar.Size.Y}) then
+                        playerList.scrolling = {true, (utility:MouseLocation().Y - list_bar.Position.Y)}
+                    elseif utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
+                        for Index = 1, 10 do
+                            local Found = playerList.players[Index + playerList.scrollingindex]
                             --
-                            playerList:UpdateScroll()
-                            --
-                            break
+                            if Found and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y + 2 + (22 * (Index - 1)), list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + 2 + (22 * (Index - 1)) + 22}) then
+                                if Found[4] then
+                                    Found[4] = false
+                                else
+                                    for Index2, Value2 in pairs(playerList.players) do
+                                        if Value2 ~= Found then
+                                            Value2[4] = false
+                                        end
+                                    end
+                                    --
+                                    Found[4] = true
+                                end
+                                --
+                                playerList:UpdateScroll()
+                                --
+                                break
+                            end
                         end
                     end
                 end
             end
+            --
+            library.ended[#library.ended + 1] = function(Input)
+                if playerList.scrolling[1] and Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    playerList.scrolling = {false, nil}
+                end
+            end
+            --
+            library.changed[#library.changed + 1] = function(Input)
+                if playerList.scrolling[1] then
+                    local MouseLocation = utility:MouseLocation()
+                    local Position = math.clamp((MouseLocation.Y - list_scroll.Position.Y - playerList.scrolling[2]), 0, ((list_scroll.Size.Y - list_bar.Size.Y)))
+                    --
+                    playerList.scrollingindex = math.clamp(math.round((((Position + list_scroll.Position.Y) - list_scroll.Position.Y) / ((list_scroll.Size.Y - list_bar.Size.Y))) * (#playerList.players - 10)), 0, #playerList.players - 10)
+                    playerList:UpdateScroll()
+                end
+            end
+            --
+            utility:Connection(mouse.WheelForward,function()
+                if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
+                    playerList.scrollingindex = math.clamp(playerList.scrollingindex - 1, 0, #playerList.players - 10)
+                    playerList:UpdateScroll()
+                end
+            end)
+            --
+            utility:Connection(mouse.WheelBackward,function()
+                if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
+                    playerList.scrollingindex = math.clamp(playerList.scrollingindex + 1, 0, #playerList.players - 10)
+                    playerList:UpdateScroll()
+                end
+            end)
+            --
+            playerList:UpdateScroll()
+            --
+            page.sectionOffset["left"] = page.sectionOffset["left"] + playerList_inline.Size.Y + 5
+            page.sectionOffset["right"] = page.sectionOffset["right"] + playerList_inline.Size.Y + 5
+            page.sections[#page.sections + 1] = playerList
+            return playerList
         end
-        --
-        library.ended[#library.ended + 1] = function(Input)
-            if playerList.scrolling[1] and Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                playerList.scrolling = {false, nil}
-            end
-        end
-        --
-        library.changed[#library.changed + 1] = function(Input)
-            if playerList.scrolling[1] then
-                local MouseLocation = utility:MouseLocation()
-                local Position = math.clamp((MouseLocation.Y - list_scroll.Position.Y - playerList.scrolling[2]), 0, ((list_scroll.Size.Y - list_bar.Size.Y)))
-                --
-                playerList.scrollingindex = math.clamp(math.round((((Position + list_scroll.Position.Y) - list_scroll.Position.Y) / ((list_scroll.Size.Y - list_bar.Size.Y))) * (#playerList.players - 10)), 0, #playerList.players - 10)
-                playerList:UpdateScroll()
-            end
-        end
-        --
-        utility:Connection(mouse.WheelForward,function()
-            if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
-                playerList.scrollingindex = math.clamp(playerList.scrollingindex - 1, 0, #playerList.players - 10)
-                playerList:UpdateScroll()
-            end
-        end)
-        --
-        utility:Connection(mouse.WheelBackward,function()
-            if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
-                playerList.scrollingindex = math.clamp(playerList.scrollingindex + 1, 0, #playerList.players - 10)
-                playerList:UpdateScroll()
-            end
-        end)
-        --
-        playerList:UpdateScroll()
-        --
-        page.sectionOffset["left"] = page.sectionOffset["left"] + playerList_inline.Size.Y + 5
-        page.sectionOffset["right"] = page.sectionOffset["right"] + playerList_inline.Size.Y + 5
-        page.sections[#page.sections + 1] = playerList
-        return playerList
-    end
     --
     function sections:Label(info)
         local info = info or {}
