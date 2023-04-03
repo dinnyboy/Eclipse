@@ -719,7 +719,6 @@ end
             library.began = {}
             library.ended = {}
             library.changed = {}
-            library.pointers = {}
             library.colors = {}
             --
             uis.MouseIconEnabled = true
