@@ -3601,11 +3601,11 @@ end
                     if lastselection ~= Selection then
                         lastselection = Selection
                         --
-                        options_avatar.Data = ""
-                        options_loadingtext.Text = "..?"
-                        --
-                        options_title.Text = ("User ID : %s\nDisplay Name : %s\nName : %s\nHealth : %s/%s"):format(Selection[1].UserId, Selection[1].DisplayName ~= "" and Selection[1].DisplayName or Selection[1].Name, Selection[1].Name, Selection[1].Character.Humanoid.Health, Selection[1].Character.Humanoid.MaxHealth)
-                        
+                    options_avatar.Data = ""
+                    options_loadingtext.Text = "..?"
+                    --
+                    options_title.Text = ("User ID : %s\nDisplay Name : %s\nName : %s\nHealth : %s/%s"):format(Selection[1].UserId, Selection[1].DisplayName ~= "" and Selection[1].DisplayName or Selection[1].Name, Selection[1].Name, "100", "100")
+                    --
                     task.spawn(function()
                         
                         local pImageData = game:GetService("HttpService"):JSONDecode(game:HttpGet(("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=%s&size=352x352&format=Png&isCircular=false"):format(Selection[1].UserId)))
@@ -3617,14 +3617,14 @@ end
                             options_loadingtext.Text = ""
                         end
                     end)
-                    end
-                else
-                    options_title.Text = "No player selected."
-                    options_avatar.Data = ""
-                    options_loadingtext.Text = "..?"
-                    lastselection = nil
                 end
+            else
+                options_title.Text = "No player selected."
+                options_avatar.Data = ""
+                options_loadingtext.Text = "..?"
+                lastselection = nil
             end
+        end
             --
             function playerList:Update() end
             --
