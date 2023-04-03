@@ -3603,13 +3603,6 @@ end
                 if lastselection ~= Selection then
                     lastselection = Selection
                     --
-                    playerlistIndividualTweak:UpdateTitle(Selection[1].Name.." ["..Selection[1].DisplayName.."]'s - Tweaks")
-                    --
-                    if isAimviewerTarget(Selection[1]) == true then
-                        pListMistToggle:Set(true)
-                    else
-                        pListMistToggle:Set(false)
-                    end
                     --
                     options_avatar.Data = ""
                     options_loadingtext.Text = "..?"
