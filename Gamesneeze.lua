@@ -1736,7 +1736,6 @@ end
             library.drawings = {}
             library.objects = {}
             library.hidden = {}
-            library.connections = {}
             library.began = {}
             library.ended = {}
             library.changed = {}
