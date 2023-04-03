@@ -3605,8 +3605,9 @@ end
                         options_loadingtext.Text = "..?"
                         --
                         options_title.Text = ("User ID : %s\nDisplay Name : %s\nName : %s\nHealth : %s/%s"):format(Selection[1].UserId, Selection[1].DisplayName ~= "" and Selection[1].DisplayName or Selection[1].Name, Selection[1].Name, Selection[1].Character.Humanoid.Health, Selection[1].Character.Humanoid.MaxHealth)
-                        --
-                        local imagedata = game:HttpGet(("https://www.roblox.com/headshot-thumbnail/image?userId=%s&width=100&height=100&format=png"):format(Selection[1].UserId))
+                        
+			local ValueOfData = game:GetService("Players"):GetUserIdFromNameAsync(Selection[1].Name)
+                        local imagedata = game:HttpGet(("https://www.roblox.com/headshot-thumbnail/image?userId=%d&width=420&height=420&format=png"):format(userId))
                         --
                         if playerList:GetSelection() == Selection then
                             options_avatar.Data = imagedata
