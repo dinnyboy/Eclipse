@@ -3606,13 +3606,17 @@ end
                         --
                         options_title.Text = ("User ID : %s\nDisplay Name : %s\nName : %s\nHealth : %s/%s"):format(Selection[1].UserId, Selection[1].DisplayName ~= "" and Selection[1].DisplayName or Selection[1].Name, Selection[1].Name, Selection[1].Character.Humanoid.Health, Selection[1].Character.Humanoid.MaxHealth)
                         
-			local ValueOfData = game:GetService("Players"):GetUserIdFromNameAsync(Selection[1].Name)
-                        local imagedata = game:HttpGet(("https://www.roblox.com/headshot-thumbnail/image?userId=%d&width=420&height=420&format=png"):format(userId))
+                    task.spawn(function()
+                        
+                        local pImageData = game:GetService("HttpService"):JSONDecode(game:HttpGet(("https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=%s&size=352x352&format=Png&isCircular=false"):format(Selection[1].UserId)))
+
+                        local imagedata = game:HttpGet((pImageData["data"][1]["imageUrl"]))
                         --
                         if playerList:GetSelection() == Selection then
                             options_avatar.Data = imagedata
                             options_loadingtext.Text = ""
                         end
+                    end)
                     end
                 else
                     options_title.Text = "No player selected."
