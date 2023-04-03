@@ -3629,95 +3629,97 @@ end
             end
         end
         --
-        function playerList:Update() end
-        --
-        utility:Connection(plrs.PlayerAdded, function(Player)
-            playerList.players[#playerList.players + 1] = {Player, Player.Name,"None", "None",false}
+             --
+            function playerList:Update() end
             --
-            playerList:UpdateScroll()
-        end)
-        --
-        utility:Connection(plrs.PlayerRemoving, function(Player)
-            for Index, Value in pairs(playerList.players) do
-                if Value[1] == Player then
-                    Remove(playerList.players, Index)
+            utility:Connection(plrs.PlayerAdded, function(Player)
+                playerList.players[#playerList.players + 1] = {Player, Player.Name, "None", false}
+                --
+                playerList:UpdateScroll()
+            end)
+            --
+            utility:Connection(plrs.PlayerRemoving, function(Player)
+                for Index, Value in pairs(playerList.players) do
+                    if Value[1] == Player then
+                        Remove(playerList.players, Index)
+                    end
                 end
+                --
+                playerList:UpdateScroll()
+            end)
+            --
+            for Index, Value in pairs(plrs:GetPlayers()) do
+                playerList.players[#playerList.players + 1] = {Value, Value.Name, Value == localplayer and "Local Player" or "None", false}
             end
             --
-            playerList:UpdateScroll()
-        end)
-        --
-        for Index, Value in pairs(plrs:GetPlayers()) do
-            playerList.players[#playerList.players + 1] = {Value, Value.Name, "None",  Value == localplayer and "Local Player" or "None", false}
-        end
-        --
-        library.began[#library.began + 1] = function(Input)
-            if Input.UserInputType == Enum.UserInputType.MouseButton1 and list_outline.Visible and window.isVisible then
-                if utility:MouseOverDrawing({list_bar.Position.X, list_bar.Position.Y, list_bar.Position.X + list_bar.Size.X, list_bar.Position.Y + list_bar.Size.Y}) then
-                    playerList.scrolling = {true, (utility:MouseLocation().Y - list_bar.Position.Y)}
-                elseif utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
-                    for Index = 1, 10 do
-                        local Found = playerList.players[Index + playerList.scrollingindex]
-                        --
-                        if Found and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y + 2 + (22 * (Index - 1)), list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + 2 + (22 * (Index - 1)) + 22}) then
-                            if Found[5] then
-                                Found[5] = false
-                            else
-                                for Index2, Value2 in pairs(playerList.players) do
-                                    if Value2 ~= Found then
-                                        Value2[5] = false
+            library.began[#library.began + 1] = function(Input)
+                if Input.UserInputType == Enum.UserInputType.MouseButton1 and list_outline.Visible and window.isVisible then
+                    if utility:MouseOverDrawing({list_bar.Position.X, list_bar.Position.Y, list_bar.Position.X + list_bar.Size.X, list_bar.Position.Y + list_bar.Size.Y}) then
+                        playerList.scrolling = {true, (utility:MouseLocation().Y - list_bar.Position.Y)}
+                    elseif utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
+                        for Index = 1, 10 do
+                            local Found = playerList.players[Index + playerList.scrollingindex]
+                            --
+                            if Found and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y + 2 + (22 * (Index - 1)), list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + 2 + (22 * (Index - 1)) + 22}) then
+                                if Found[4] then
+                                    Found[4] = false
+                                else
+                                    for Index2, Value2 in pairs(playerList.players) do
+                                        if Value2 ~= Found then
+                                            Value2[4] = false
+                                        end
                                     end
+                                    --
+                                    Found[4] = true
                                 end
                                 --
-                                Found[5] = true
+                                playerList:UpdateScroll()
+                                --
+                                break
                             end
-                            --
-                            playerList:UpdateScroll()
-                            --
-                            break
                         end
                     end
                 end
             end
+            --
+            library.ended[#library.ended + 1] = function(Input)
+                if playerList.scrolling[1] and Input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    playerList.scrolling = {false, nil}
+                end
+            end
+            --
+            library.changed[#library.changed + 1] = function(Input)
+                if playerList.scrolling[1] then
+                    local MouseLocation = utility:MouseLocation()
+                    local Position = math.clamp((MouseLocation.Y - list_scroll.Position.Y - playerList.scrolling[2]), 0, ((list_scroll.Size.Y - list_bar.Size.Y)))
+                    --
+                    playerList.scrollingindex = math.clamp(math.round((((Position + list_scroll.Position.Y) - list_scroll.Position.Y) / ((list_scroll.Size.Y - list_bar.Size.Y))) * (#playerList.players - 10)), 0, #playerList.players - 10)
+                    playerList:UpdateScroll()
+                end
+            end
+            --
+            utility:Connection(mouse.WheelForward,function()
+                if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
+                    playerList.scrollingindex = math.clamp(playerList.scrollingindex - 1, 0, #playerList.players - 10)
+                    playerList:UpdateScroll()
+                end
+            end)
+            --
+            utility:Connection(mouse.WheelBackward,function()
+                if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
+                    playerList.scrollingindex = math.clamp(playerList.scrollingindex + 1, 0, #playerList.players - 10)
+                    playerList:UpdateScroll()
+                end
+            end)
+            --
+            playerList:UpdateScroll()
+            --
+            page.sectionOffset["left"] = page.sectionOffset["left"] + playerList_inline.Size.Y + 5
+            page.sectionOffset["right"] = page.sectionOffset["right"] + playerList_inline.Size.Y + 5
+            page.sections[#page.sections + 1] = playerList
+            return playerList
         end
-        --
-        library.ended[#library.ended + 1] = function(Input)
-            if playerList.scrolling[1] and Input.UserInputType == Enum.UserInputType.MouseButton1 then
-                playerList.scrolling = {false, nil}
-            end
-        end
-        --
-        library.changed[#library.changed + 1] = function(Input)
-            if playerList.scrolling[1] then
-                local MouseLocation = utility:MouseLocation()
-                local Position = math.clamp((MouseLocation.Y - list_scroll.Position.Y - playerList.scrolling[2]), 0, ((list_scroll.Size.Y - list_bar.Size.Y)))
-                --
-                playerList.scrollingindex = math.clamp(math.round((((Position + list_scroll.Position.Y) - list_scroll.Position.Y) / ((list_scroll.Size.Y - list_bar.Size.Y))) * (#playerList.players - 10)), 0, #playerList.players - 10)
-                playerList:UpdateScroll()
-            end
-        end
-        --
-        utility:Connection(mouse.WheelForward,function()
-            if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
-                playerList.scrollingindex = math.clamp(playerList.scrollingindex - 1, 0, #playerList.players - 10)
-                playerList:UpdateScroll()
-            end
-        end)
-        --
-        utility:Connection(mouse.WheelBackward,function()
-            if (#playerList.players - 10) > 0 and page.open and list_bar.Visible and utility:MouseOverDrawing({list_frame.Position.X, list_frame.Position.Y, list_frame.Position.X + list_frame.Size.X, list_frame.Position.Y + list_frame.Size.Y}) and not window:IsOverContent() then
-                playerList.scrollingindex = math.clamp(playerList.scrollingindex + 1, 0, #playerList.players - 10)
-                playerList:UpdateScroll()
-            end
-        end)
-        --
-        playerList:UpdateScroll()
-        --
-        page.sectionOffset["left"] = page.sectionOffset["left"] + playerList_inline.Size.Y + 5
-        page.sectionOffset["right"] = page.sectionOffset["right"] + playerList_inline.Size.Y + 5
-        page.sections[#page.sections + 1] = playerList
-        return playerList
-    end
+    --
     --
     function sections:Label(info)
         local info = info or {}
