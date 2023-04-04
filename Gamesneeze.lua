@@ -4111,7 +4111,7 @@ end
                     library.Relations[Relation[1].UserId] = Relation[3] ~= "None" and Relation[3] or nil
                 end
                 --
-                playerList_title.Text = ("Player List - %s Players"):format(#playerList.players)
+                playerList_title.Text = ("Alts %s In game"):format(#playerList.players)
                 --
                 local Selection = playerList:GetSelection()
                 --
