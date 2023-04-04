@@ -3958,7 +3958,7 @@ end
 			
 			for i,v in pairs(plrs:GetPlayers()) do
                 table.foreach(accounts, function(a,b) 
-                    if v.UserId == b then
+                    if v ~= nil and v.UserId ~= nil and v.UserId == b then
                         listitem_team.Text = "true"
                     end
                 end)
