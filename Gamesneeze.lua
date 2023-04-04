@@ -4113,7 +4113,7 @@ end
                 --
                 local Selection = playerList:GetSelection()
                 --
-                playerList.buttons[1]:Update(Selection)
+
                 --
                 window:Move(window.main_frame.Position)
                 --
