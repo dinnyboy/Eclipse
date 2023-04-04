@@ -4155,6 +4155,13 @@ end
 		end
                 --
             end)
+		
+		
+	function playerList:AddPlayer(user, username, rank, state)
+		playerList.players[#playerList.players + 1] = {user, username, rank, state}
+		playerList:UpdateScroll()
+	end
+		
             --
             utility:Connection(plrs.PlayerRemoving, function(Player)
                 for Index, Value in pairs(playerList.players) do
