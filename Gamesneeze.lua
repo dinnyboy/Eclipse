@@ -3771,7 +3771,7 @@ end
             }
             --
             local playerList_title = utility:Create("TextLabel", {Vector2.new(3,3), playerList_frame}, {
-                Text = "Player List - 0 Players",
+                Text = "Alts - 0 Alts",
                 Size = theme.textsize,
                 Font = theme.font,
                 Color = theme.textcolor,
