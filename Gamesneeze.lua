@@ -3957,11 +3957,11 @@ end
                         listitem_username.Text = selected[2]
 			
 			for i,v in pairs(plrs:GetPlayers()) do
-				for index, value in accounts do
-					if value == v.UserId then
-						listitem_team.Text = "true"
-					end
-				end
+                table.foreach(accounts, function(a,b) 
+                    if v.UserId == b then
+                        listitem_team.Text = "true"
+                    end
+                end)
 			end
 					
 			
